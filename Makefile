@@ -1,4 +1,4 @@
-PROJECT = bmpe
+PROJECT = bmp
 
 LIBPROJECT = $(PROJECT).a
 
@@ -16,7 +16,7 @@ LDGTESTFLAGS = $(LDXXFLAGS) -lgtest -lgtest_main -lpthread
 
 DEPS=$(wildcard *.h)
 
-OBJ=bmpimage.o
+OBJ=bmp_image.o
 
 .PHONY: default
 
@@ -31,6 +31,8 @@ $(LIBPROJECT): $(OBJ)
 $(PROJECT): main.o $(LIBPROJECT)
 	$(CXX) -o $@ main.o $(LDXXFLAGS)
 
+BMP=filter.bmp rotated_un90.bmp rotated_90.bmp
+
 all: $(PROJECT)
 
 .PHONY: clean
@@ -41,3 +43,4 @@ clean:
 cleanall: clean
 	rm -f $(PROJECT)
 	rm -f $(LIBPROJECT)
+	rm -f $(BMP)
