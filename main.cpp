@@ -5,14 +5,20 @@ first LabWork*/
 
 int main()
 {
-    const char* filename = "image.bmp";
-    BmpImage img;
-    img.loadFile(filename);
-    img.rotateOclock();
-    img.writeFile("rotated_90.bmp");
-    img.rotateUnOclock();
-    img.rotateUnOclock();
-    img.writeFile("rotated_un90.bmp");
-    img.gaussFilter(3, 5.0); //radius, sigma. If the program is running too long, you can change the values.
-    img.writeFile("filter.bmp");
+    BmpImage image;
+    image.load("ima.bmp");
+    image.rotate90Clockwise();
+    std::cout << "Rotated" << '\n';
+    image.save("rotated_90.bmp");
+    std::cout << "Saved rotated_90.bmp" << '\n';
+    image.rotate90CounterClockwise();
+    std::cout << "Rotated" << '\n';
+    image.rotate90CounterClockwise();
+    std::cout << "Rotated" << '\n';
+    image.save("rotated_un90.bmp");
+    std::cout << "Saved rotated_un90.bmp" << '\n';
+    image.gaussFilter(3, 5); //radius, sigma. If the program is running too long, you can change the values.
+    image.save("filter.bmp");
+    std::cout << "Saved filter.bmp" << '\n';
+    return 0;
 }

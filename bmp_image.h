@@ -5,21 +5,21 @@ first LabWork*/
 #define BMP_IMAGE_H
 #include "struct.h"
 #include <vector>
+#include <iostream>
 
 class BmpImage
 {
 private:
-    BMPHeader _header;
-    BMPInfoHeader _infoheader;
-    uint32_t _height;
-    uint32_t _width;
-    std::vector<std::vector<Pixel>> _data;
+    BMPHeader header;
+    DIBHeader dibHeader;
+    int32_t width, height;
+    std::vector<std::vector<Pixel>> data;
     std::vector<std::vector<double>> createGaussianKernel(int, double);
 public:
-    void loadFile(const char*);
-    void writeFile(const char*);
-    void rotateOclock();
-    void rotateUnOclock();
+    void load(const std::string&);
+    void rotate90Clockwise();
+    void rotate90CounterClockwise();
+    void save(const std::string&);
     void gaussFilter(int, double);
 };
 
