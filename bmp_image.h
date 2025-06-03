@@ -20,7 +20,6 @@ public:
     void rotate90CounterClockwise();
     void save(const std::string&);
     void gaussFilter(int, double);
-    void gaussFilter(std::vector<std::vector<double>>&, const int&);
     std::vector<std::vector<double>> createGaussianKernel(int, double);
 };
 

@@ -1,7 +1,6 @@
 /*Maksim Lazarev st128707@student.spbu.ru
 first LabWork*/
 #include <chrono>
-#include "bmp_image.h"
 #include "threads.h"
 
 // int main()
