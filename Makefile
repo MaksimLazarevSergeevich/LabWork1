@@ -16,7 +16,7 @@ LDGTESTFLAGS = $(LDXXFLAGS) -lgtest -lgtest_main -lpthread
 
 DEPS=$(wildcard *.h)
 
-OBJ=bmp_image.o
+OBJ=bmp_image.o threads.o
 
 .PHONY: default
 

@@ -1,6 +1,6 @@
 /*Maksim Lazarev st128707@student.spbu.ru
 first LabWork*/
-
+#include <thread>
 #include "bmp_image.h"
 #include <fstream>
 #include <iostream>
@@ -130,9 +130,39 @@ std::vector<std::vector<double>> BmpImage::createGaussianKernel(int radius, doub
     return kernel;
 }
 
-void BmpImage::gaussFilter(int radius, double sigma)
+// void BmpImage::gaussFilter(int radius, double sigma)
+// {
+//     std::vector<std::vector<double>> kernel = createGaussianKernel(radius, sigma);
+
+//     for (int y = 0; y < height; ++y)
+//     {
+//         for (int x = 0; x < width; ++x)
+//         {
+//             double sumR = 0.0, sumG = 0.0, sumB = 0.0;
+//             for (int ky = -radius; ky <= radius; ++ky)
+//             {
+//                 for (int kx = -radius; kx <= radius; ++kx)
+//                 {
+//                     int ny = y + ky;
+//                     int nx = x + kx;
+//                     if (ny >= 0 && ny < height && nx >= 0 && nx < width)
+//                     {
+//                         sumR += data[ny][nx].red * kernel[ky + radius][kx + radius];
+//                         sumG += data[ny][nx].green * kernel[ky + radius][kx + radius];
+//                         sumB += data[ny][nx].blue * kernel[ky + radius][kx + radius];
+//                     }
+//                 }
+//             }
+//             data[y][x].red = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumR)));
+//             data[y][x].green = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumG)));
+//             data[y][x].blue = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumB)));
+//         }
+//     }
+// }
+
+
+void BmpImage::gaussFilter(std::vector<std::vector<double>>& kernel, const int& radius)
 {
-    std::vector<std::vector<double>> kernel = createGaussianKernel(radius, sigma);
 
     for (int y = 0; y < height; ++y)
     {
@@ -157,5 +187,67 @@ void BmpImage::gaussFilter(int radius, double sigma)
             data[y][x].green = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumG)));
             data[y][x].blue = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumB)));
         }
+    }
+}
+
+
+void BmpImage::gaussFilter(int radius, double sigma)
+{
+    std::vector<std::vector<double>> kernel = createGaussianKernel(radius, sigma);
+    auto original = data;
+
+    int num_threads = std::thread::hardware_concurrency();
+
+    std::vector<std::thread> threads;
+    /*lamda*/
+    auto worker = [&](int start_y, int end_y)
+    {
+        for (int y = start_y; y < end_y; ++y)
+        {
+            for (int x = 0; x < width; ++x)
+            {
+                double sumR = 0.0, sumG = 0.0, sumB = 0.0;
+                for (int ky = -radius; ky <= radius; ++ky)
+                {
+                    for (int kx = -radius; kx <= radius; ++kx)
+                    {
+                        int ny = y + ky;
+                        int nx = x + kx;
+                        if (ny >= 0 && ny < height && nx >= 0 && nx < width)
+                        {
+                            sumR += original[ny][nx].red   * kernel[ky + radius][kx + radius];
+                            sumG += original[ny][nx].green * kernel[ky + radius][kx + radius];
+                            sumB += original[ny][nx].blue  * kernel[ky + radius][kx + radius];
+                        }
+                    }
+                }
+                data[y][x].red   = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumR)));
+                data[y][x].green = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumG)));
+                data[y][x].blue  = static_cast<uint8_t>(std::min(255.0, std::max(0.0, sumB)));
+            }
+        }
+    };
+
+    int block = height / num_threads;
+    for (int i = 0; i < num_threads; ++i)
+    {
+        int start = i * block;
+        int end;
+
+        if (i == num_threads - 1)
+        {
+            end = height;
+        }
+        else
+        {
+            end = (i + 1) * block;
+        }
+
+        threads.push_back(std::thread(worker, start, end));
+    }
+
+    for (auto& t : threads)
+    {
+        t.join();
     }
 }

@@ -14,13 +14,14 @@ private:
     DIBHeader dibHeader;
     int32_t width, height;
     std::vector<std::vector<Pixel>> data;
-    std::vector<std::vector<double>> createGaussianKernel(int, double);
 public:
     void load(const std::string&);
     void rotate90Clockwise();
     void rotate90CounterClockwise();
     void save(const std::string&);
     void gaussFilter(int, double);
+    void gaussFilter(std::vector<std::vector<double>>&, const int&);
+    std::vector<std::vector<double>> createGaussianKernel(int, double);
 };
 
 #endif
