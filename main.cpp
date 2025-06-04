@@ -1,7 +1,7 @@
 /*Maksim Lazarev st128707@student.spbu.ru
 first LabWork*/
 #include <chrono>
-#include "threads.h"
+#include "include/threads.h"
 
 // int main()
 // {
@@ -35,7 +35,7 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
 
     BmpImage image;
-    image.load("ima.bmp");
+    image.load("test_images/ima.bmp");
 
     std::thread th_1(thread_1, image);
     std::thread th_2(thread_2, image);

@@ -1,4 +1,4 @@
-#include "threads.h"
+#include "include/threads.h"
 
 /**
  * @brief Rotates the image 90 degrees clockwise and saves the result.

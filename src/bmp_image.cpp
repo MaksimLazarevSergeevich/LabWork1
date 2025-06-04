@@ -1,7 +1,7 @@
 /*Maksim Lazarev st128707@student.spbu.ru
 first LabWork*/
 #include <thread>
-#include "bmp_image.h"
+#include "include/bmp_image.h"
 #include <fstream>
 #include <cmath>
 
@@ -22,8 +22,15 @@ void BmpImage::load(const std::string& filename)
         throw std::runtime_error("Unable to open BMP file.");
     }
 
-    in.read(reinterpret_cast<char*>(&header), sizeof(header));
-    in.read(reinterpret_cast<char*>(&dibHeader), sizeof(dibHeader));
+    if (!in.read(reinterpret_cast<char*>(&header), sizeof(header)))
+    {
+        throw  std::runtime_error("Failed to read header");
+    }
+
+    if (!in.read(reinterpret_cast<char*>(&dibHeader), sizeof(dibHeader)))
+    {
+        throw std::runtime_error("Failed to read dibHeader");
+    }
 
     if (header.fileType != 0x4D42)
     {
@@ -304,3 +311,17 @@ void BmpImage::gaussFilter(int radius, double sigma)
     }
 }
 
+int32_t BmpImage::getWidth()
+{
+    return width;
+}
+
+int32_t BmpImage::getHeight()
+{
+    return height;
+}
+
+std::vector<std::vector<Pixel>> BmpImage::getPixel()
+{
+    return data;
+}

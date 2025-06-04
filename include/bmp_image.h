@@ -21,6 +21,9 @@ public:
     void save(const std::string&);
     void gaussFilter(int, double);
     std::vector<std::vector<double>> createGaussianKernel(int, double);
+    int32_t getWidth();
+    int32_t getHeight();
+    std::vector<std::vector<Pixel>> getPixel();
 };
 
 #endif

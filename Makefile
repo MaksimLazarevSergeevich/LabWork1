@@ -1,26 +1,23 @@
 PROJECT = bmp
-
 LIBPROJECT = $(PROJECT).a
+TESTPROJECT = test-$(PROJECT)
 
 CXX = g++
-
 A = ar
-
 AFLAGS = rsv
 
-CCXFLAGS = -I. -std=c++17 -Wall -g -fPIC
-
-LDXXFLAGS = $(CCXFLAGS) -L. -l:$(LIBPROJECT)
-
+CXXFLAGS = -I. -std=c++17 -Wall -Werror -Wpedantic -g -fPIC
+LDXXFLAGS = $(CXXFLAGS) -L. -l:$(LIBPROJECT)
 LDGTESTFLAGS = $(LDXXFLAGS) -lgtest -lgtest_main -lpthread
 
-DEPS=$(wildcard *.h)
-
-OBJ=bmp_image.o threads.o
+DEPS = $(wildcard include/*.h)
+SRCS = $(wildcard src/*.cpp)
+OBJ = $(SRCS:.cpp=.o)
+TEST-SRCS = $(wildcard tests/*.cpp)
+TEST-OBJ = $(TEST-SRCS:.cpp=.o)
 
 .PHONY: default
-
-default: all;
+default: all
 
 %.o: %.cpp $(DEPS)
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
@@ -31,16 +28,17 @@ $(LIBPROJECT): $(OBJ)
 $(PROJECT): main.o $(LIBPROJECT)
 	$(CXX) -o $@ main.o $(LDXXFLAGS)
 
-BMP=filter.bmp rotated_un90.bmp rotated_90.bmp
+$(TESTPROJECT): $(LIBPROJECT) $(TEST-OBJ)
+	$(CXX) -o $@ $(TEST-OBJ) $(LDGTESTFLAGS)
+
+test: $(TESTPROJECT)
 
 all: $(PROJECT)
 
 .PHONY: clean
-
 clean:
-	rm -f *.o
+	rm -f *.o src/*.o tests/*.o
 
+.PHONY: cleanall
 cleanall: clean
-	rm -f $(PROJECT)
-	rm -f $(LIBPROJECT)
-	rm -f $(BMP)
+	rm -f $(PROJECT) $(LIBPROJECT) $(TESTPROJECT)
