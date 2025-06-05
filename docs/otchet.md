@@ -13,6 +13,30 @@ To compare performance of applying Gaussian filter on BMP-image in two implement
 
 ---
 
+## Parameters of the test image
+
+- weight = 1792 pixels
+- height = 1024 pixels
+- color depth = 24
+- name = ima.bmp
+- location = test_images/ima.bmp
+
+## Test Machine Specifications
+
+- **Processor**: Intel® Core™ i5-9300H @ 2.40GHz
+- **Architecture**: x86_64
+- **Cores / Threads**: 4 physical cores, 8 logical threads (hyperthreading enabled)
+- **Cache**:
+  - L1: 128 KiB (instruction) + 128 KiB (data) × 4
+  - L2: 1 MiB total
+  - L3: 8 MiB shared
+- **Supported Instruction Sets**: SSE, SSE2, SSE4.1/4.2, AVX, AVX2, FMA, AES-NI
+- **Virtualization**: VT-x (enabled)
+- **Operating System**: WSL2 (Hypervisor: Microsoft)
+- **NUMA Nodes**: 1 (CPUs 0–7)
+
+Performance was measured under a virtualized Linux environment using WSL2, which may slightly affect CPU scheduling and cache behavior.
+
 ## Brief description of the implementation
 
 ### Serial implementation
@@ -178,3 +202,29 @@ void BmpImage::gaussFilter(int radius, double sigma)
 ![with_threads](images/with_threads.png)
 
 ### The time is greatly reduced
+
+## Tests for different number of cores
+
+![use_1](images/use_1.png)
+
+![use_2](images/use_2.png)
+
+![use_3](images/use_3.png)
+
+![use_4](images/use_4.png)
+
+![use_5](images/use_5.png)
+
+![use_6](images/use_6.png)
+
+![use_7](images/use_7.png)
+
+![with_threads](images/with_threads.png)
+
+![use_10](images/use_10.png)
+
+#### Initially, the program's execution time dropped significantly as the number of threads increased. However, as the thread count approached 8, the performance gains began to diminish. Beyond 8 threads, execution time actually started to increase, indicating overhead from excessive parallelism.
+
+## Conclusion:
+
+The Gaussian filter demonstrates strong performance scaling up to a certain number of threads (around 8 in our case), after which parallel overhead outweighs the benefits of additional threads. This suggests that the optimal thread count is closely tied to the number of physical CPU cores. Over-threading can lead to contention, context switching, and cache inefficiencies, ultimately reducing performance.

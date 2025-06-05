@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
 #include "include/bmp_image.h"
 
+/**
+ * @test Tests that a valid 24-bit BMP image loads successfully,
+ *        and checks dimensions and pixel values.
+ */
 TEST(BmpImageTest, LoadsValid24BitBmp)
 {
     BmpImage image;
@@ -15,12 +19,20 @@ TEST(BmpImageTest, LoadsValid24BitBmp)
     EXPECT_EQ(p[0][0].blue, 0);
 }
 
+/**
+ * @test Ensures that an exception is thrown when loading a file
+ *        that does not have a valid BMP signature.
+ */
 TEST(BmpImageTest, ThrowsOnInvalidSignature)
 {
     BmpImage image;
     EXPECT_THROW(image.load("test_images/not_a_bmp.txt"), std::runtime_error);
 }
 
+/**
+ * @test Verifies that a 1x1 pixel BMP image is loaded correctly,
+ *        and that the pixel color is as expected.
+ */
 TEST(BmpImageTest, LoadsOneByOneBmp)
 {
     BmpImage image;
@@ -34,12 +46,20 @@ TEST(BmpImageTest, LoadsOneByOneBmp)
     EXPECT_EQ(p[0][0].blue, 255);
 }
 
+/**
+ * @test Checks that loading a corrupted BMP header results in
+ *        a runtime exception.
+ */
 TEST(BmpImageTest, ThrowsOnCorruptedHeader)
 {
     BmpImage image;
     EXPECT_THROW(image.load("test_images/bmp_corrupted_header.bmp"), std::runtime_error);
 }
 
+/**
+ * @test Validates that rotating a 5x10 BMP image 90 degrees clockwise
+ *        results in a correctly transformed pixel matrix.
+ */
 TEST(BmpImageTest, Rotate90ClockwiseOn5x10Image)
 {
     BmpImage image;
@@ -66,6 +86,10 @@ TEST(BmpImageTest, Rotate90ClockwiseOn5x10Image)
     }
 }
 
+/**
+ * @test Validates that rotating a 5x10 BMP image 90 degrees counterclockwise
+ *        results in the expected pixel arrangement.
+ */
 TEST(BmpImageTest, Rotate90CounterClockwiseOn5x10Image)
 {
     BmpImage image;
@@ -93,7 +117,10 @@ TEST(BmpImageTest, Rotate90CounterClockwiseOn5x10Image)
     }
 }
 
-
+/**
+ * @test Ensures that a BMP image can be saved to disk after modification
+ *        (e.g., after rotation).
+ */
 TEST(BmpImageTest, SaveFile)
 {
     BmpImage image;
@@ -102,6 +129,11 @@ TEST(BmpImageTest, SaveFile)
     EXPECT_NO_THROW(image.save("test_images/rotated_rec_bmp.bmp"));
 }
 
+/**
+ * @test Verifies that the Gaussian blur filter applied to an image
+ *        with a white center pixel causes neighboring pixels to brighten
+ *        and the center to dim, as expected from convolution.
+ */
 TEST(BmpImageTest, GaussBlurSpreadsWhiteCenter)
 {
     BmpImage image;

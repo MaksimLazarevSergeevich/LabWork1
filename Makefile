@@ -37,7 +37,7 @@ all: $(PROJECT)
 
 .PHONY: clean
 clean:
-	rm -f *.o src/*.o tests/*.o
+	rm -f *.o src/*.o tests/*.o *.bmp
 
 .PHONY: cleanall
 cleanall: clean

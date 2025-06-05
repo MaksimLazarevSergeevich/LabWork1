@@ -46,6 +46,6 @@ int main()
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
 
-    std::cout << "Время выполнения: " << duration.count() << " секунд\n";
+    std::cout << "Execution time: " << duration.count() << " seconds\n";
     return 0;
 }

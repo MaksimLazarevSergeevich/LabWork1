@@ -240,6 +240,9 @@ void BmpImage::gaussFilter(int radius, double sigma)
         num_threads = 4;
     }
 
+    // num_threads = 8;
+    // std::cout << "Use 8 cores\n";
+
     std::vector<std::thread> threads;
 
     /**
