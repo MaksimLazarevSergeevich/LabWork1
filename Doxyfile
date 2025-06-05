@@ -1,0 +1,37 @@
+
+PROJECT_NAME           = "BmpImage Project"
+PROJECT_BRIEF          = "A C++ library for BMP image loading, rotation, and filtering"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = include src tests
+FILE_PATTERNS          = *.h *.cpp
+RECURSIVE              = YES
+
+OUTPUT_LANGUAGE        = English
+INPUT_ENCODING         = UTF-8
+MARKDOWN_SUPPORT       = YES
+EXTENSION_MAPPING      = md=Markdown
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+GENERATE_LATEX         = YES
+GENERATE_HTML          = NO
+USE_PDFLATEX           = YES
+LATEX_OUTPUT           = latex
+LATEX_BATCHMODE        = YES
+LATEX_HIDE_INDICES     = NO
+
+HAVE_DOT               = YES
+DOT_GRAPH_MAX_NODES    = 50
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+CLASS_DIAGRAMS         = YES
+
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+STRIP_CODE_COMMENTS    = NO
+
+USE_MDFILE_AS_MAINPAGE = README.md
+
